@@ -1,0 +1,18 @@
+# Caddyfile
+# Replace 'your.domain.com' with your actual domain name
+n8n.matthewwan.dev {
+    # Enable automatic HTTPS (Caddy will obtain and renew Let's Encrypt certificates)
+    tls your_email@example.com # Optional: Provide an email for urgent notices from Let's Encrypt
+
+    # Reverse proxy all requests to the n8n service
+    reverse_proxy n8n:5678
+
+    # Optional: Enable Caddy's access logs
+    log {
+        output stdout
+        format json
+    }
+
+    # Optional: Gzip compression
+    encode gzip
+}
