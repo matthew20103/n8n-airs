@@ -1,0 +1,52 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n
+    restart: always
+    environment:
+      # Replace with your actual domain name
+      N8N_HOSTNAME: n8n.matthewwan.dev
+      N8N_PROTOCOL: https
+      # This is crucial for webhooks to be generated with the correct HTTPS URL
+      WEBHOOK_URL: https://n8n.matthewwan.dev
+      # Set your desired timezone, e.g., "Asia/Hong_Kong", "America/New_York"
+      GENERIC_TIMEZONE: "Asia/Hong_Kong"
+      # IMPORTANT: Generate a strong, random key for encryption.
+      # You can use `openssl rand -base64 32` to generate one.
+      N8N_ENCRYPTION_KEY: "pkevwYasT9FnXcpultpiRufVL/7hMEHM61XABS24wbM="
+      # Optional: Database configuration (Postgres recommended for production)
+      # DB_TYPE: postgresdb
+      # DB_POSTGRESDB_HOST: postgres
+      # DB_POSTGRESDB_PORT: 5432
+      # DB_POSTGRESDB_DATABASE: n8n
+      # DB_POSTGRESDB_USER: n8nuser
+      # DB_POSTGRESDB_PASSWORD: n8npassword
+    volumes:
+      # Persistent storage for n8n data (workflows, credentials, etc.)
+      - n8n_data:/home/node/.n8n
+    # n8n listens internally on port 5678
+    expose:
+      - "5678"
+
+  caddy:
+    image: caddy:latest
+    restart: always
+    ports:
+      # Caddy listens on standard HTTP and HTTPS ports
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Mount the Caddyfile from the current directory
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      # Persistent storage for Caddy's certificates and state
+      - caddy_data:/data
+    # Ensure Caddy starts after n8n is ready
+    depends_on:
+      - n8n
+
+# Define named volumes for persistent data
+volumes:
+  n8n_data:
+  caddy_data:
