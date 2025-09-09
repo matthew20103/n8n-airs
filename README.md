@@ -15,8 +15,8 @@ Create a file named `docker-compose.yml` inside your `n8n-server` directory and 
         
         services:
           n8n:
-            # CORRECTED: Changed image name from n8n.io/n8n to n8nio/n8n
-            image: n8nio/n8n
+            # CORRECTED: Changed image name to your preferred version
+            image: n8nio/n8n:1.109.2
             restart: always
             environment:
               # Replace with your actual domain name
@@ -93,7 +93,7 @@ It's crucial to generate a strong encryption key for n8n. You can use the follow
 5. Run the N8N Server
 Once you have both `docker-compose.yml` and `Caddyfile` in your `n8n-server` directory, navigate to that directory in your terminal and run:
 
-        docker-compose up -d
+        docker compose up -d
     This command will:
 - Download the `n8nio/n8n` and `caddy:latest` Docker images (if not already present).
 - Create the `n8n` and `caddy` containers.
@@ -104,8 +104,8 @@ Once you have both `docker-compose.yml` and `Caddyfile` in your `n8n-server` dir
 After a few moments, you should be able to access your n8n instance securely via HTTPS by navigating to `https://your.domain.com` in your web browser.
 You can also check the logs to ensure everything is running smoothly:
 
-        docker-compose logs -f
+        docker compose logs -f
 
     To stop the services, run:
 
-        docker-compose down
+        docker compose down
