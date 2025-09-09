@@ -3,7 +3,7 @@ version: '3.8'
 
 services:
   n8n:
-    image: n8nio/n8n
+    image: n8nio/n8n:1.109.2
     restart: always
     environment:
       # Replace with your actual domain name
